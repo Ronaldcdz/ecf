@@ -25,7 +25,10 @@ Sigue estos pasos usando el conector de Notion y las reglas de CLAUDE.md:
    - Si no terminó: deja Estado = "En Progreso" y escribe o actualiza en la página una sección "Dónde quedé" con 2 o 3 líneas: qué se hizo, qué falta y el siguiente paso concreto.
 6. Si la tarea terminó y todas las tareas hermanas de la historia están Realizadas, pregunta si se marca la historia como Realizada.
 7. Si la tarea tiene documento ODD, marca su `T#` y anota el commit en `odd/tasks/<historia>.md`.
-8. Comprueba que `docs/aprendizaje/progreso.md` tiene registradas todas las preguntas de la sesión y que cada decisión de Ronald tiene su ADR en `docs/decisions/`. Si falta alguno, créalo antes del commit.
+8. Preguntas y decisiones, antes del commit:
+   - Si con esta tarea se cierra una fase, una historia o un hito, crea de 3 a 5 preguntas en la base de Notion "Preguntas de comprobación" (`collection://04fa9bf1-44ab-4070-9799-b925ae13e3e6`) con Estado = Pendiente, Respuesta esperada con evidencia del código y Referencia, siguiendo CLAUDE.md. Avísale a Ronald que puede responderlas desde el móvil.
+   - Sincroniza `docs/aprendizaje/progreso.md` desde Notion: copia las preguntas Respondidas que falten y los repasos nuevos, con el formato del archivo, y recalcula el resumen. Nunca edites en el archivo algo que no esté en Notion.
+   - Comprueba que cada decisión de Ronald tiene su ADR en `docs/decisions/`. Si falta alguno, créalo.
 9. Termina con un resumen de 3 líneas: qué se hizo y por qué, tiempo estimado vs. real con el puntaje de la sesión, y cuál es la siguiente tarea de la semana.
 
 No hagas `git push` sin permiso.

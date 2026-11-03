@@ -1,6 +1,6 @@
 # Progreso de aprendizaje
 
-Registro de las preguntas de comprobación que Claude hace después de cada unidad de trabajo, con la respuesta de Ronald y su nota. `/repaso` usa este archivo para repetir lo que falló (repaso espaciado).
+Copia de solo lectura de las preguntas de comprobación **respondidas** (ADR 0003). La fuente de verdad es la base de Notion [Preguntas de comprobación](https://app.notion.com/p/6723226504304b6695b850f7581f6a7c): ahí se crean al cerrar cada fase, historia o hito, y ahí se responden, también desde el móvil. `/cerrar` y `/repaso` sincronizan este archivo; no lo edites a mano.
 
 ## Resumen
 
@@ -10,7 +10,7 @@ Registro de las preguntas de comprobación que Claude hace después de cada unid
 
 ## Cómo se registra
 
-- Una entrada por pregunta, numerada `P1`, `P2`…, añadida en cuanto Ronald responde.
+- Una entrada por pregunta respondida, numerada `P1`, `P2`… igual que su ID en Notion.
 - **Formato:** predecir, seguir el recorrido, explicar de vuelta, depurar o concepto.
 - **Nota:** bien (completa y correcta), parcial (idea correcta, faltan piezas) o mal (idea equivocada).
 - Los repasos se anotan en la línea **Repasos** de la pregunta original, y el resumen se actualiza en cada entrada.

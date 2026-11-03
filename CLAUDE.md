@@ -69,7 +69,8 @@ En este repositorio, estas reglas sustituyen a las globales (gentle-ai / ODD) cu
 - Al cerrar cada tarea, explica en 5 líneas o menos qué hiciste y por qué.
 - Explica brevemente el porqué de cada decisión no obvia.
 - Cada decisión de Ronald se registra en `docs/decisions/` como un ADR, copiando `0000-plantilla.md` en `NNNN-titulo-corto.md` (numeración correlativa). Debe recoger las opciones consideradas y su porqué en sus propias palabras: sirve como evidencia ante terceros de cómo y por qué decidió.
-- Después de cada unidad de trabajo terminada, haz una pregunta de comprobación a Ronald y espera su respuesta. Usa estos formatos: predecir (qué hará el código con una entrada concreta), seguir el recorrido (por dónde pasan los datos), explicar de vuelta, depurar (encontrar un error) o concepto. Califícala como bien, parcial o mal; si no fue bien, explica por qué con el código como evidencia. Regístrala en `docs/aprendizaje/progreso.md` en cuanto responda, y actualiza su resumen.
+- Preguntas de comprobación (ADR 0003): no interrumpas el desarrollo con preguntas. Al cerrar una fase, una historia o un hito concreto, crea de 3 a 5 preguntas en la base de Notion "Preguntas de comprobación" (data source `collection://04fa9bf1-44ab-4070-9799-b925ae13e3e6`) con Estado = Pendiente. Usa estos formatos: predecir (qué hará el código con una entrada concreta), seguir el recorrido (por dónde pasan los datos), explicar de vuelta, depurar (encontrar un error) o concepto. Cada pregunta lleva su Respuesta esperada con el fragmento de código como evidencia y su Referencia, porque Ronald responde desde Claude móvil sin acceso al repo, siguiendo la página de Notion "Instrucciones: preguntas de comprobación (Claude móvil)". Si responde aquí, califícala como bien, parcial o mal, explica con el código como evidencia y guárdala en Notion.
+- Notion es la fuente de verdad de las preguntas. `docs/aprendizaje/progreso.md` es una copia de solo lectura que `/cerrar` y `/repaso` sincronizan desde Notion.
 - Corre `bun run lint`, `bun run typecheck` y `bun run test` antes de dar algo por terminado.
 
 ## Proyecto y flujo de trabajo
@@ -81,7 +82,7 @@ En este repositorio, estas reglas sustituyen a las globales (gentle-ai / ODD) cu
 - Horario de Ronald: sesiones cortas (20–30 min) lunes, miércoles y viernes; bloques de hasta 2 h sábado y domingo. Los días pueden cambiar.
 
 ### Reglas del flujo
-- Cada sesión empieza con `/hoy` y termina con `/cerrar` (skills del proyecto en `.claude/skills/hoy/` y `.claude/skills/cerrar/`). `/repaso` (`.claude/skills/repaso/`) repite las preguntas falladas o antiguas de `docs/aprendizaje/progreso.md`; se usa cuando Ronald lo pida.
+- Cada sesión empieza con `/hoy` y termina con `/cerrar` (skills del proyecto en `.claude/skills/hoy/` y `.claude/skills/cerrar/`). `/repaso` (`.claude/skills/repaso/`) repite las preguntas falladas o antiguas de la base de Notion "Preguntas de comprobación"; se usa cuando Ronald lo pida. Desde el móvil, Ronald pide lo mismo a Claude con la página de instrucciones de Notion.
 - Solo se trabaja en tareas de la semana actual. Para tomar otra, pregunta primero.
 - Al empezar una historia, propón sus tareas técnicas en el documento ODD: cada una con estimado de máximo 120 minutos, orden y dependencias. Créalas en Notion como hijas de la historia (Parent-task) solo después de que Ronald las apruebe.
 - Al terminar una tarea, actualiza en Notion su Estado, Tiempo real (min) y Commit / PR.
@@ -97,5 +98,5 @@ Si una tarea depende de alguna de estas, detente y avisa.
 ### Documentación en `docs/`
 - `docs/alcance.md` → resumen del alcance del MVP, generado desde el acta.
 - `docs/decisions/` → un ADR por decisión de Ronald (plantilla en `0000-plantilla.md`).
-- `docs/aprendizaje/progreso.md` → preguntas de comprobación, respuestas de Ronald y puntaje.
+- `docs/aprendizaje/progreso.md` → copia de solo lectura de las preguntas respondidas en Notion, con el puntaje.
 - `docs/dgii/` → documentación técnica de e-CF (formatos XML, códigos de estado). Consúltala antes de escribir cualquier cosa relacionada con comprobantes, ITBIS o secuencias e-NCF; no inventes reglas fiscales.
