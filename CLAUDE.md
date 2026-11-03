@@ -21,8 +21,9 @@ Objetivo de aprendizaje: Ronald quiere entender todo el sistema sin escribir el 
 - Vitest para lógica y composables, Playwright para flujos
 - Bun solo como gestor de paquetes y para correr scripts (`bun install`, `bun run`). Runtime: Node LTS para Nuxt y NestJS, en desarrollo y producción. No usar `npm install` ni otro gestor: un solo lockfile (`bun.lock`).
 - Workspaces declarados en el campo `workspaces` del `package.json` raíz. Cada paquete declara en su propio `package.json` todo lo que importa, aunque Bun lo tenga instalado en la raíz.
-- Backend (Fase 3): NestJS 12.3 o superior con el adaptador `@nestjs/platform-node` (sin Express). PostgreSQL como base de datos.
+- Backend (Fase 3): NestJS 12.3 o superior con el adaptador `@nestjs/platform-node` (sin Express). PostgreSQL como base de datos y TypeORM como ORM, solo en `apps/api` (ADR 0001). Nuxt no usa ORM ni accede a la base de datos.
 - Calidad: ESLint, Prettier, commitlint + husky, GitHub Actions (lint, typecheck, test en cada push).
+- Diagramas: todos en Mermaid (archivos `.mmd`), generados con Mermaid CLI (`@mermaid-js/mermaid-cli`, comando `mmdc`) instalado como dependencia de desarrollo en la raíz con Bun.
 - Despliegue previsto: Vercel para `apps/web`; el hosting de la API y la base de datos sigue pendiente.
 
 ## Arquitectura de `apps/api` (Fase 3)
@@ -59,14 +60,16 @@ En este repositorio, estas reglas sustituyen a las globales (gentle-ai / ODD) cu
 - Los commits por unidad de trabajo de ODD se hacen en la rama de la historia; nunca `git push` ni PR sin permiso.
 
 ## Cómo trabajar conmigo (Claude)
-- Antes de una funcionalidad nueva, propón el plan (documento ODD) y espera aprobación. No escribas código en modo plan.
-- Puedes implementar todo, incluida la lógica de negocio central (cálculo de ITBIS, totales, validación de RNC y e-CF), con dos condiciones:
+- Las decisiones de diseño las toma Ronald: estructura de carpetas, endpoints, modelo de datos, diseño de UI, flujo y tecnologías. Claude solo escribe el código. Antes de redactar el documento ODD de un módulo, pregúntale cada decisión de una en una. Si una elección suya tiene un problema real (seguridad, rendimiento, mala práctica), dilo con evidencia, pero la decisión final es suya. Lo que este archivo ya fija se considera decidido.
+- Antes de una funcionalidad nueva, propón el plan (documento ODD) con las decisiones de Ronald y espera aprobación. No escribas código en modo plan.
+- Escribes todo el código, incluida la lógica de negocio central (cálculo de ITBIS, totales, validación de RNC y e-CF), siguiendo el cómo que Ronald define (ADR 0002), con dos condiciones:
   - Cada regla de negocio cita su fuente (documento de `docs/dgii/` o norma de la DGII) en un comentario o en `docs/`.
   - Cada regla tiene tests legibles que Ronald pueda usar para entender su comportamiento, incluidos los casos borde.
 - Si una regla de la DGII es ambigua o no tiene fuente en `docs/dgii/`, pregunta antes de implementarla; no la inventes.
 - Al cerrar cada tarea, explica en 5 líneas o menos qué hiciste y por qué.
 - Explica brevemente el porqué de cada decisión no obvia.
-- Las decisiones de arquitectura importantes se registran en `docs/decisions/` (una página corta por decisión).
+- Cada decisión de Ronald se registra en `docs/decisions/` como un ADR, copiando `0000-plantilla.md` en `NNNN-titulo-corto.md` (numeración correlativa). Debe recoger las opciones consideradas y su porqué en sus propias palabras: sirve como evidencia ante terceros de cómo y por qué decidió.
+- Después de cada unidad de trabajo terminada, haz una pregunta de comprobación a Ronald y espera su respuesta. Usa estos formatos: predecir (qué hará el código con una entrada concreta), seguir el recorrido (por dónde pasan los datos), explicar de vuelta, depurar (encontrar un error) o concepto. Califícala como bien, parcial o mal; si no fue bien, explica por qué con el código como evidencia. Regístrala en `docs/aprendizaje/progreso.md` en cuanto responda, y actualiza su resumen.
 - Corre `bun run lint`, `bun run typecheck` y `bun run test` antes de dar algo por terminado.
 
 ## Proyecto y flujo de trabajo
@@ -78,7 +81,7 @@ En este repositorio, estas reglas sustituyen a las globales (gentle-ai / ODD) cu
 - Horario de Ronald: sesiones cortas (20–30 min) lunes, miércoles y viernes; bloques de hasta 2 h sábado y domingo. Los días pueden cambiar.
 
 ### Reglas del flujo
-- Cada sesión empieza con `/hoy` y termina con `/cerrar` (skills del proyecto en `.claude/skills/hoy/` y `.claude/skills/cerrar/`).
+- Cada sesión empieza con `/hoy` y termina con `/cerrar` (skills del proyecto en `.claude/skills/hoy/` y `.claude/skills/cerrar/`). `/repaso` (`.claude/skills/repaso/`) repite las preguntas falladas o antiguas de `docs/aprendizaje/progreso.md`; se usa cuando Ronald lo pida.
 - Solo se trabaja en tareas de la semana actual. Para tomar otra, pregunta primero.
 - Al empezar una historia, propón sus tareas técnicas en el documento ODD: cada una con estimado de máximo 120 minutos, orden y dependencias. Créalas en Notion como hijas de la historia (Parent-task) solo después de que Ronald las apruebe.
 - Al terminar una tarea, actualiza en Notion su Estado, Tiempo real (min) y Commit / PR.
@@ -87,11 +90,12 @@ En este repositorio, estas reglas sustituyen a las globales (gentle-ai / ODD) cu
 
 ### Decisiones pendientes (no las tomes tú)
 - Proveedor de e-CF y su API.
-- Hosting de la API y de la base de datos, y ORM para NestJS (Prisma, Drizzle o TypeORM).
+- Hosting de la API y de la base de datos.
 - Cómo cancelar facturas entre el 1 de marzo y el 2 de abril de 2027, y si la anulación de secuencias no usadas entra en el alcance.
 Si una tarea depende de alguna de estas, detente y avisa.
 
 ### Documentación en `docs/`
 - `docs/alcance.md` → resumen del alcance del MVP, generado desde el acta.
-- `docs/decisions/` → una página corta por decisión de arquitectura.
+- `docs/decisions/` → un ADR por decisión de Ronald (plantilla en `0000-plantilla.md`).
+- `docs/aprendizaje/progreso.md` → preguntas de comprobación, respuestas de Ronald y puntaje.
 - `docs/dgii/` → documentación técnica de e-CF (formatos XML, códigos de estado). Consúltala antes de escribir cualquier cosa relacionada con comprobantes, ITBIS o secuencias e-NCF; no inventes reglas fiscales.
