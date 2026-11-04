@@ -1,7 +1,7 @@
 # 0005 — `/cerrar` calcula el tiempo y asume la tarea terminada
 
 - **Fecha:** 2026-11-04
-- **Estado:** aceptada
+- **Estado:** aceptada; la parte de dar la tarea por Realizada fue sustituida por [0007](0007-cerrar-determina-estado-de-tarea.md)
 - **Decidido por:** Ronald Cadiz
 - **Referencias:** `.claude/skills/hoy/SKILL.md`, `.claude/skills/cerrar/SKILL.md`
 
