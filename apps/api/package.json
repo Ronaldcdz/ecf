@@ -1,0 +1,17 @@
+{
+  "name": "@ecf/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "oxlint src/",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@ecf/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "oxlint": "^1.91.0",
+    "typescript": "~6.0.3"
+  }
+}
