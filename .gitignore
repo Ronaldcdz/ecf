@@ -3,3 +3,7 @@ node_modules/
 !.env.example
 .claude/settings.local.json
 .atl/
+.nuxt/
+.output/
+.data/
+dist/
