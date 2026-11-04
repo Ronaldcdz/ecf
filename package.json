@@ -1,0 +1,11 @@
+{
+  "name": "ecf",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "@mermaid-js/mermaid-cli": "^12.2.0"
+  }
+}
