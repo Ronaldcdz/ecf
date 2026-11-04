@@ -7,7 +7,7 @@ Objetivo de aprendizaje: Ronald quiere entender todo el sistema sin escribir el 
 ## Estructura del monorepo (Bun workspaces)
 - `apps/web` → Nuxt (frontend)
 - `apps/api` → NestJS (backend, Fase 3)
-- `packages/shared` → tipos y esquemas Zod compartidos entre web y api (Cliente, Producto, Factura, respuestas de la API)
+- `packages/shared` → tipos y esquemas Zod compartidos entre web y api (Cliente, Servicio, Factura, respuestas de la API)
 - `docs/` → alcance, diagrama de arquitectura, decisiones (`docs/decisions/`), documentación DGII (`docs/dgii/`)
 - `odd/tasks/` → documentos ODD, uno por historia (ver "Precedencia sobre la configuración global")
 - Las dependencias entre paquetes usan `workspace:*`. `apps/web` y `apps/api` nunca se importan entre sí; solo comparten a través de `packages/shared`.
@@ -27,7 +27,7 @@ Objetivo de aprendizaje: Ronald quiere entender todo el sistema sin escribir el 
 - Despliegue previsto: Vercel para `apps/web`; el hosting de la API y la base de datos sigue pendiente.
 
 ## Arquitectura de `apps/api` (Fase 3)
-- Módulos de Nest por funcionalidad (`clientes`, `productos`, `facturas`, `auth`), igual que las layers del frontend.
+- Módulos de Nest por funcionalidad (`clientes`, `servicios`, `facturas`, `auth`), igual que las layers del frontend.
 - Validación con los esquemas Zod de `packages/shared`, usando la opción `schema` de los decoradores (`@Body({ schema })`) o un `ZodValidationPipe` propio. No usar `class-validator`.
 - Solo abstracciones de Nest: no usar `@Req()`/`@Res()` con tipos de Express ni middlewares de Express. Si una librería exige Express, detente y avisa; se registra como decisión.
 - Errores de validación con el mismo formato que consume el frontend (`{ campo: [mensajes] }`), definido en `packages/shared`.
@@ -37,7 +37,7 @@ Objetivo de aprendizaje: Ronald quiere entender todo el sistema sin escribir el 
 ## Arquitectura de `apps/web`
 - Organización por funcionalidad con Nuxt Layers en `apps/web/layers/`:
   - `base` → sistema de diseño (tema de Nuxt UI y tokens de Tailwind, componentes propios solo cuando Nuxt UI no tenga uno), layout, utilidades
-  - `auth`, `clientes`, `productos`, `facturas`
+  - `auth`, `clientes`, `servicios`, `facturas`
 - Cada layer contiene sus propios `components/`, `composables/`, `pages/`.
 - Flujo de datos: Componente → composable (`useClientes`) → cliente API tipado → server routes de Nuxt (mock). Nunca llamar `$fetch` ni `useFetch` directamente desde un componente.
 - Los mocks viven en `apps/web/server/api/` y responden con los tipos de `packages/shared`, igual que lo hará la API real.
