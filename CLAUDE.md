@@ -15,14 +15,14 @@ Objetivo de aprendizaje: Ronald quiere entender todo el sistema sin escribir el 
 ## Stack
 - Nuxt (versión estable actual), Vue 3 con `<script setup lang="ts">`
 - TypeScript en modo estricto en todos los paquetes. Prohibido `any`.
-- Nuxt UI como librería de componentes, con Tailwind CSS (el que trae Nuxt UI; no instalar otro aparte)
+- Nuxt UI como librería de componentes, con Tailwind CSS declarado en `apps/web`, como indica la guía oficial de instalación de Nuxt UI
 - Pinia solo para estado global (sesión, empresa activa)
 - Zod para validar formularios y respuestas de la API (esquemas en `packages/shared`)
 - Vitest para lógica y composables, Playwright para flujos
 - Bun solo como gestor de paquetes y para correr scripts (`bun install`, `bun run`). Runtime: Node LTS para Nuxt y NestJS, en desarrollo y producción. No usar `npm install` ni otro gestor: un solo lockfile (`bun.lock`).
 - Workspaces declarados en el campo `workspaces` del `package.json` raíz. Cada paquete declara en su propio `package.json` todo lo que importa, aunque Bun lo tenga instalado en la raíz.
 - Backend (Fase 3): NestJS 12.3 o superior con el adaptador `@nestjs/platform-node` (sin Express). PostgreSQL como base de datos y TypeORM como ORM, solo en `apps/api` (ADR 0001). Nuxt no usa ORM ni accede a la base de datos.
-- Calidad: ESLint, Prettier, commitlint + husky, GitHub Actions (lint, typecheck, test en cada push).
+- Calidad: ESLint (oxlint en `apps/api`), Prettier, commitlint + husky, GitHub Actions (lint, typecheck, test en cada push).
 - Diagramas: todos en Mermaid (archivos `.mmd`), generados con Mermaid CLI (`@mermaid-js/mermaid-cli`, comando `mmdc`) instalado como dependencia de desarrollo en la raíz con Bun.
 - Despliegue previsto: Vercel para `apps/web`; el hosting de la API y la base de datos sigue pendiente.
 
