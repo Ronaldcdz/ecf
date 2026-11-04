@@ -10,9 +10,8 @@ Minutos trabajados en esta sesión: $ARGUMENTS
 Sigue estos pasos usando el conector de Notion y las reglas de CLAUDE.md:
 
 1. Identifica la tarea en curso (Estado = "En Progreso" en la base de Tareas, semana actual). Si hay más de una, pregunta cuál se cierra.
-2. Si no se indicaron minutos, pregúntalos en una línea.
-3. Pregunta a Ronald, en un solo mensaje:
-   - ¿La tarea quedó terminada? (sí / no)
+2. Si no se indicaron minutos, calcúlalos desde la hora guardada en `.atl/hoy-inicio` hasta ahora, redondeados al minuto. Si el archivo no existe o el resultado supera 240 minutos, pregúntalos en una línea. Al terminar el cierre, borra `.atl/hoy-inicio`.
+3. Si Ronald no dijo si la tarea quedó terminada, dala por terminada sin preguntar y avísalo en el paso 9.
 4. Revisa el estado del repo:
    - Los commits van en la rama de la historia, nunca en `main`.
    - Si hay cambios sin commit, propón el mensaje (Conventional Commits con scope) y pide permiso antes de hacer el commit. Si mezcla código escrito por Ronald y por Claude, propón commits separados.
@@ -29,6 +28,6 @@ Sigue estos pasos usando el conector de Notion y las reglas de CLAUDE.md:
    - Si con esta tarea se cierra una fase, una historia o un hito, crea de 3 a 5 preguntas en la base de Notion "Preguntas de comprobación" (`collection://04fa9bf1-44ab-4070-9799-b925ae13e3e6`) con Estado = Pendiente, Respuesta esperada con evidencia del código y Referencia, siguiendo CLAUDE.md. Avísale a Ronald que puede responderlas desde el móvil.
    - Sincroniza `docs/aprendizaje/progreso.md` desde Notion: copia las preguntas Respondidas que falten y los repasos nuevos, con el formato del archivo, y recalcula el resumen. Nunca edites en el archivo algo que no esté en Notion.
    - Comprueba que cada decisión de Ronald tiene su ADR en `docs/decisions/`. Si falta alguno, créalo.
-9. Termina con un resumen de 3 líneas: qué se hizo y por qué, tiempo estimado vs. real con el puntaje de la sesión, y cuál es la siguiente tarea de la semana.
+9. Termina con un resumen de 3 líneas: qué se hizo y por qué, tiempo estimado vs. real con el puntaje de la sesión, y cuál es la siguiente tarea de la semana. Si en el paso 3 diste la tarea por terminada, añade: "Se puso como Realizada por defecto; si no lo es, dímelo y lo ajusto".
 
 No hagas `git push` sin permiso.

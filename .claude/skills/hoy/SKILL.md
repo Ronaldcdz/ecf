@@ -9,6 +9,7 @@ Minutos disponibles hoy: $ARGUMENTS
 
 Sigue estos pasos usando el conector de Notion y las reglas de CLAUDE.md:
 
+0. Antes de todo, guarda la hora de inicio de la sesión con `date -Iseconds > .atl/hoy-inicio`. `/cerrar` la usa para calcular los minutos trabajados.
 1. Si no se indicaron minutos, pregúntalos en una línea y espera la respuesta.
 2. Calcula la fecha de hoy y el lunes de la semana actual.
 3. Consulta la base de Tareas (`collection://16dfbf4e-fc63-4b6a-af1c-e961526cbbc0`) y obtén las tareas que cumplan todo esto:
