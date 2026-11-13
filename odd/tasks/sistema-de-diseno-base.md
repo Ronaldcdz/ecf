@@ -26,7 +26,7 @@ Out of scope: the color mode toggle and the invoice design spike belong to the "
 
 | ID | Task (same name in Notion) | Specs | Est. | Depends on | Route | Status | Commit |
 |---|---|---|---|---|---|---|---|
-| T1 | Registrar decisiones de diseño (ADRs) | S1–S5 | 45 min | — | inline | in progress | |
+| T1 | Registrar decisiones de diseño (ADRs) | S1–S5 | 45 min | — | inline | done | `ebed9bf` |
 | T2 | Configurar tokens y tema de Nuxt UI | S1, S2 | 120 min | T1 | inline | pending | |
 | T3 | Regla de lint contra valores sueltos | S3 | 60 min | T2 | inline | pending | |
 | T4 | Página /design de muestra | S4 | 120 min | T2 | inline | pending | |
