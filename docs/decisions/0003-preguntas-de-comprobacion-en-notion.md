@@ -3,7 +3,7 @@
 - **Fecha:** 2026-11-03
 - **Estado:** aceptada
 - **Decidido por:** Ronald Cadiz
-- **Referencias:** base de Notion "Preguntas de comprobación"; página "Instrucciones: preguntas de comprobación (Claude móvil)"; `.claude/skills/repaso/`, `.claude/skills/cerrar/`
+- **Referencias:** base de Notion "Preguntas de comprobación"; página "Instrucciones: preguntas de comprobación (Claude móvil)"; `.claude/skills/repaso/`, `.claude/skills/cerrar/`; ampliada por [0016](0016-cerrar-fase-con-preguntas-pendientes.md)
 
 ## Contexto
 

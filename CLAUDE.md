@@ -70,6 +70,7 @@ En este repositorio, estas reglas sustituyen a las globales (gentle-ai / ODD) cu
 - Explica brevemente el porqué de cada decisión no obvia.
 - Cada decisión de Ronald se registra en `docs/decisions/` como un ADR, copiando `0000-plantilla.md` en `NNNN-titulo-corto.md` (numeración correlativa). Debe recoger las opciones consideradas y su porqué en sus propias palabras: sirve como evidencia ante terceros de cómo y por qué decidió.
 - Preguntas de comprobación (ADR 0003): no interrumpas el desarrollo con preguntas. Al cerrar una fase, una historia o un hito concreto, crea de 3 a 5 preguntas en la base de Notion "Preguntas de comprobación" (data source `collection://04fa9bf1-44ab-4070-9799-b925ae13e3e6`) con Estado = Pendiente. Usa estos formatos: predecir (qué hará el código con una entrada concreta), seguir el recorrido (por dónde pasan los datos), explicar de vuelta, depurar (encontrar un error) o concepto. Cada pregunta lleva su Respuesta esperada con el fragmento de código como evidencia y su Referencia, porque Ronald responde desde Claude móvil sin acceso al repo, siguiendo la página de Notion "Instrucciones: preguntas de comprobación (Claude móvil)". Si responde aquí, califícala como bien, parcial o mal, explica con el código como evidencia y guárdala en Notion.
+- Una fase se puede marcar como Realizada con preguntas pendientes. La propiedad "Preguntas respondidas el" de la fase queda vacía hasta que todas estén en Estado = Respondida (ADR 0016).
 - Notion es la fuente de verdad de las preguntas. `docs/aprendizaje/progreso.md` es una copia de solo lectura que `/cerrar` y `/repaso` sincronizan desde Notion.
 - Corre `bun run lint`, `bun run typecheck` y `bun run test` antes de dar algo por terminado.
 
@@ -82,7 +83,7 @@ En este repositorio, estas reglas sustituyen a las globales (gentle-ai / ODD) cu
 - Horario de Ronald: sesiones cortas (20–30 min) lunes, miércoles y viernes; bloques de hasta 2 h sábado y domingo. Los días pueden cambiar.
 
 ### Reglas del flujo
-- Cada sesión empieza con `/hoy` y termina con `/cerrar` (skills del proyecto en `.claude/skills/hoy/` y `.claude/skills/cerrar/`). `/repaso` (`.claude/skills/repaso/`) repite las preguntas falladas o antiguas de la base de Notion "Preguntas de comprobación"; se usa cuando Ronald lo pida. Desde el móvil, Ronald pide lo mismo a Claude con la página de instrucciones de Notion.
+- Cada sesión empieza con `/hoy` y termina con `/cerrar` (skills del proyecto en `.claude/skills/hoy/` y `.claude/skills/cerrar/`). `/repaso` (`.claude/skills/repaso/`) repite las preguntas falladas o antiguas de la base de Notion "Preguntas de comprobación"; `/cerrar` lo corre al final (hasta 4 preguntas: 2 viejas y 2 actuales) salvo con `/cerrar sin repaso`, y Ronald también puede pedirlo cuando quiera (ADR 0017). Desde el móvil, Ronald pide lo mismo a Claude con la página de instrucciones de Notion.
 - Solo se trabaja en tareas de la semana actual. Para tomar otra, pregunta primero.
 - Al empezar una historia, propón sus tareas técnicas en el documento ODD: cada una con estimado de máximo 120 minutos, orden y dependencias. Créalas en Notion como hijas de la historia (Parent-task) solo después de que Ronald las apruebe.
 - Al terminar una tarea, actualiza en Notion su Estado, Tiempo real (min) y Commit / PR.
