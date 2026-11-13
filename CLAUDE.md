@@ -62,6 +62,7 @@ En este repositorio, estas reglas sustituyen a las globales (gentle-ai / ODD) cu
 ## Cómo trabajar conmigo (Claude)
 - Las decisiones de diseño las toma Ronald: estructura de carpetas, endpoints, modelo de datos, diseño de UI, flujo y tecnologías. Claude solo escribe el código. Antes de redactar el documento ODD de un módulo, pregúntale cada decisión de una en una. Si una elección suya tiene un problema real (seguridad, rendimiento, mala práctica), dilo con evidencia, pero la decisión final es suya. Lo que este archivo ya fija se considera decidido.
 - Antes de una funcionalidad nueva, propón el plan (documento ODD) con las decisiones de Ronald y espera aprobación. No escribas código en modo plan.
+- Cada pantalla se diseña primero en Claude Design, con el sistema de diseño del proyecto, y Ronald la aprueba antes de programarla (ADR 0023). Diseño y código van por módulos; la pantalla de crear factura se diseña adelantada, junto al layout (ADR 0024). Los tokens del código son la fuente de verdad: si cambia uno, actualiza también el sistema de diseño en Claude Design.
 - Escribes todo el código, incluida la lógica de negocio central (cálculo de ITBIS, totales, validación de RNC y e-CF), siguiendo el cómo que Ronald define (ADR 0002), con dos condiciones:
   - Cada regla de negocio cita su fuente (documento de `docs/dgii/` o norma de la DGII) en un comentario o en `docs/`.
   - Cada regla tiene tests legibles que Ronald pueda usar para entender su comportamiento, incluidos los casos borde.
