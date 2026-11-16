@@ -1,0 +1,40 @@
+%% C4 level 2 (containers): the deployable pieces and the data flow inside apps/web.
+%% Dashed arrows are planned for Phase 3; solid arrows are the frontend MVP.
+flowchart TB
+    usuario(["Usuario del negocio"])
+
+    subgraph web["apps/web · Nuxt"]
+        direction TB
+        subgraph features["Features (Nuxt Layers)"]
+            direction LR
+            auth["auth"]
+            clientes["clientes"]
+            servicios["servicios"]
+            facturas["facturas"]
+        end
+        base["<b>base</b><br/>Sistema de diseño, layout y utilidades"]
+        componentes["Componentes"]
+        composables["Composables"]
+        clienteApi["Cliente API tipado"]
+        mock["Server routes de Nuxt<br/>(mock)"]
+
+        features -->|"usan"| base
+        features -->|"Cada feature contiene"| componentes
+        componentes --> composables
+        composables --> clienteApi
+        clienteApi --> mock
+    end
+
+    shared["<b>packages/shared</b><br/>Tipos y esquemas Zod"]
+    api["<b>apps/api · NestJS</b><br/>(Fase 3)"]
+    db[("PostgreSQL<br/>(Fase 3)")]
+    proveedor["<b>Proveedor de<br/>e-CF</b><br/>(por definir)"]
+    dgii["<b>DGII</b>"]
+
+    usuario --> features
+    clienteApi -.->|"Sustituye al mock en la Fase 3"| api
+    api -.->|"TypeORM"| db
+    api -.->|"Envía e-CF y consulta su estado"| proveedor
+    proveedor -.->|"Firma y transmite"| dgii
+    web -->|"Importa contratos"| shared
+    api -.->|"Importa contratos"| shared

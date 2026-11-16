@@ -1,0 +1,38 @@
+---
+name: cerrar
+description: Cierra la sesión de trabajo y registra el avance en Notion
+argument-hint: [minutos trabajados] [sin repaso | repaso N]
+disable-model-invocation: true
+---
+
+Argumentos: $ARGUMENTS
+
+Pueden traer los minutos trabajados en esta sesión y una opción de repaso: `sin repaso` lo omite y `repaso N` hace N preguntas en lugar de 4.
+
+Sigue estos pasos usando el conector de Notion y las reglas de CLAUDE.md:
+
+1. Identifica la tarea en curso (Estado = "En Progreso" en la base de Tareas, semana actual). Si hay más de una, pregunta cuál se cierra.
+2. Si no se indicaron minutos, calcúlalos desde la hora guardada en `.atl/hoy-inicio` hasta ahora, redondeados al minuto. Si el archivo no existe o el resultado supera 240 minutos, pregúntalos en una línea. Al terminar el cierre, borra `.atl/hoy-inicio`.
+3. Si Ronald no dijo si la tarea quedó terminada, determínalo sin preguntar: compara lo que pide la tarea (su página, los criterios de la historia y su `T#` si tiene documento ODD) con lo que hay en el repo y lo hecho en la sesión. Está terminada solo si se cumple todo lo pedido. Si falta algo o no se puede comprobar, queda sin terminar.
+4. Revisa el estado del repo:
+   - Los commits van en la rama de la historia, nunca en `main`.
+   - Si hay cambios sin commit, propón el mensaje (Conventional Commits con scope) y pide permiso antes de hacer el commit. Si mezcla código escrito por Ronald y por Claude, propón commits separados.
+   - Obtén el hash del último commit de la sesión. Si hay remoto en GitHub, arma el enlace al commit; si no, usa el hash corto.
+   - Si se terminó la tarea, corre antes `bun run lint`, `bun run typecheck` y `bun run test`. Si algo falla, avisa y no la marques como terminada.
+5. Actualiza la tarea en Notion:
+   - Tiempo real (min): suma los minutos de esta sesión al valor que ya tenga.
+   - Commit / PR: el enlace o hash.
+   - Si terminó: Estado = "Realizado" y "Realizado el" = hoy.
+   - Si no terminó: deja Estado = "En Progreso" y escribe o actualiza en la página una sección "Dónde quedé" con 2 o 3 líneas: qué se hizo, qué falta y el siguiente paso concreto.
+6. Si la tarea terminó y todas las tareas hermanas de la historia están Realizadas, pregunta si se marca la historia como Realizada.
+7. Si la tarea tiene documento ODD, marca su `T#` y anota el commit en `odd/tasks/<historia>.md`.
+8. Preguntas y decisiones, antes del commit:
+   - Si con esta tarea se cierra una fase, una historia o un hito, crea de 3 a 5 preguntas en la base de Notion "Preguntas de comprobación" (`collection://04fa9bf1-44ab-4070-9799-b925ae13e3e6`) con Estado = Pendiente, Respuesta esperada con evidencia del código y Referencia, siguiendo CLAUDE.md. Avísale a Ronald que puede responderlas desde el móvil.
+   - Si todas las historias y tareas de la fase están Realizadas, pregunta si se marca la fase como Realizada. Las preguntas Pendientes no lo impiden: si las hay, dile a Ronald cuáles son (ADR 0016).
+   - En cada fase Realizada con "Preguntas respondidas el" vacía, consulta sus preguntas (propiedad Fase). Si ya no queda ninguna Pendiente, pon en esa propiedad la Fecha respuesta más reciente.
+   - Repaso automático (ADR 0017): salvo que se haya indicado `sin repaso`, lee `.claude/skills/repaso/SKILL.md` y sigue sus pasos 2, 4 y 5, con 4 preguntas o las indicadas en `repaso N`. Reparte la cantidad por mitades: actuales (propiedad Fase = fase de la tarea que se cierra) y viejas (fases anteriores). Si N es impar, la pregunta extra es de las actuales. Dentro de cada grupo, usa el orden de prioridad del paso 2. Si un grupo no llega a su mitad, completa con el otro. No incluyas las preguntas creadas en este cierre. Si no toca ninguna, sigue sin decir nada. Si Ronald responde "hoy no" o pide parar, deja el repaso ahí.
+   - Sincroniza `docs/aprendizaje/progreso.md` desde Notion: copia las preguntas Respondidas que falten y los repasos nuevos, con el formato del archivo, y recalcula el resumen. Nunca edites en el archivo algo que no esté en Notion.
+   - Comprueba que cada decisión de Ronald tiene su ADR en `docs/decisions/`. Si falta alguno, créalo.
+9. Termina con un resumen de 3 líneas: qué se hizo y por qué, tiempo estimado vs. real con el puntaje de la sesión, y cuál es la siguiente tarea de la semana. Si en el paso 3 determinaste tú el estado, di cuál pusiste y por qué en una línea, y pregunta si Ronald quiere ajustarlo. Si lo pide, corrige en Notion el Estado, "Realizado el" y "Dónde quedé".
+
+No hagas `git push` sin permiso.
