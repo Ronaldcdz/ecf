@@ -27,7 +27,7 @@ Out of scope: the color mode toggle and the invoice design spike belong to the "
 | ID | Task (same name in Notion) | Specs | Est. | Depends on | Route | Status | Commit |
 |---|---|---|---|---|---|---|---|
 | T1 | Registrar decisiones de diseño (ADRs) | S1–S5 | 45 min | — | inline | done | `ebed9bf` |
-| T2 | Configurar tokens y tema de Nuxt UI | S1, S2 | 120 min | T1 | inline | pending | |
+| T2 | Configurar tokens y tema de Nuxt UI | S1, S2 | 120 min | T1 | inline | done | `5d3b963`, `f4130c2` |
 | T3 | Regla de lint contra valores sueltos | S3 | 60 min | T2 | inline | pending | |
 | T4 | Página /design de muestra | S4 | 120 min | T2 | inline | pending | |
 | T5 | Sistema de diseño en Claude Design | S5 | 60 min | T2 | inline | pending | |
@@ -41,3 +41,4 @@ Out of scope: the color mode toggle and the invoice design spike belong to the "
 - **L2** (2026-11-13) — Decisions asked one at a time. Contrast checked numerically: coral `#f25f5c` rejected (3.2:1 on white, clashes with `error`); wine `#88292f` passed (8.73:1) but was replaced by `#2f0147` (17.27:1 on white). Sansation rejected: no `tnum`, only weights 300/400/700. `eslint-plugin-better-tailwindcss` 4.11.0 verified: peers ESLint ^10 and Tailwind ^4.1.17.
 - **L3** (2026-11-13) — ODD document and its 5 tasks approved ("SI"). Notion tasks created as children of the story, week of 2026-11-09. ODD docs are versioned in the public repo ("Subelos a github").
 - **L4** (2026-11-17) — T2 started. Ronald asked what the tokens are based on: "I want to really understand". He chose "The guide first": `docs/sistema-de-diseno.md` explains the token layers, the OKLCH scale method and WCAG contrast before any code. Measured: `#247ba0` sits on step 600 (Nuxt UI uses 500 in light mode), `#2f0147` on 950, and `--ui-text-muted` (`#717c89`, 4.25:1 on white) fails AA. Ronald decides these three points during T2.
+- **L5** (2026-11-17) — Ronald: "For learning purposes I don't want you to give me recommendations. I prefer you to recommend me after I make a choice." Decisions ADR 0025-0033 (shades per mode, `brand-*` names, white background, status colors on 700, `text-dimmed` = `text-muted`). The AA test found that Nuxt UI placeholders use `text-dimmed` (2.58:1), which led to ADR 0033. T2 done: 47 tests, lint and typecheck pass.
