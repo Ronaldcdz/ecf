@@ -110,6 +110,26 @@ describe('Nuxt UI configuration', () => {
     }
   })
 
+  // Nuxt UI sets its dark shades inside `@layer theme`, and our `:root` block is
+  // unlayered, so it wins over them even in dark mode. Every color we change in
+  // `:root` must be set again in `.dark`, or dark mode keeps the light shade.
+  it('sets again in .dark every color it overrides in :root', () => {
+    const variable = /(--ui-[a-z-]+):/g
+    const rootColors = [...cssBlock(':root').matchAll(variable)]
+      .map((match) => match[1])
+      .filter((name) => name !== '--ui-radius')
+    const darkVariables = [...cssBlock('.dark').matchAll(variable)].map((match) => match[1])
+    expect(darkVariables).toEqual(expect.arrayContaining(rootColors))
+  })
+
+  it('keeps shade 400 in dark mode (ADR 0029, 0030; Nuxt UI default)', () => {
+    const dark = cssBlock('.dark')
+    for (const color of ['primary', 'secondary', 'success', 'warning', 'info', 'error']) {
+      expect(dark).toContain(`--ui-${color}: var(--ui-color-${color}-400)`)
+    }
+    expect(dark).toContain('--ui-text-muted: var(--ui-color-neutral-400)')
+  })
+
   it('gives text-dimmed (placeholders) the same shade as text-muted (ADR 0033)', () => {
     expect(cssBlock(':root')).toContain(
       '--ui-text-dimmed: var(--ui-color-neutral-600)',

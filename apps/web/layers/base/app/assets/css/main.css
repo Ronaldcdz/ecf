@@ -59,7 +59,18 @@
   --ui-error: var(--ui-color-error-700);
 }
 
-/* Dark mode: Nuxt UI defaults (shade 400; ADR 0029, 0030), except placeholders. */
+/*
+ * Dark mode: Nuxt UI defaults (shade 400; ADR 0029, 0030), except placeholders.
+ * Nuxt UI sets these inside `@layer theme`, and the unlayered `:root` above wins over
+ * any layer, so each color overridden in `:root` must be set again here.
+ */
 .dark {
+  --ui-primary: var(--ui-color-primary-400);
+  --ui-secondary: var(--ui-color-secondary-400);
+  --ui-text-muted: var(--ui-color-neutral-400);
   --ui-text-dimmed: var(--ui-color-neutral-400); /* ADR 0033 */
+  --ui-success: var(--ui-color-success-400);
+  --ui-warning: var(--ui-color-warning-400);
+  --ui-info: var(--ui-color-info-400);
+  --ui-error: var(--ui-color-error-400);
 }
