@@ -104,6 +104,17 @@ El fondo en modo claro es blanco ([ADR 0031](decisions/0031-fondo-blanco-en-modo
 
 Nombres de las paletas primitivas: `brand-blue`, `brand-purple` y `brand-gray` ([ADR 0028](decisions/0028-prefijo-brand-para-paletas-propias.md)).
 
+## 8. Qué clases acepta el lint (T3)
+
+Los componentes solo usan nombres semánticos ([ADR 0036](decisions/0036-solo-colores-semanticos-en-componentes.md)). `bun run lint` falla con:
+
+- **Valores arbitrarios:** `p-[13px]`, `text-[#123456]`, `p-(--mi-variable)`.
+- **Colores con tono:** `bg-red-500`, `bg-brand-blue-200` e incluso `bg-primary-100`. Los tonos de marca solo se usan en la layer `base`, dentro de los tokens.
+- **`black` y `white`:** usa `bg-default`, `text-highlighted` y similares.
+- **Clases que Tailwind no conoce:** `text-primery`.
+
+Sí se aceptan `text-primary`, `text-muted`, `bg-elevated`, `border-default`, la opacidad (`bg-primary/10`) y el espaciado y los breakpoints de Tailwind (`p-4`, `md:grid-cols-2`). Si falta un tono, primero se crea un token semántico en `base`, cubierto por el test de contraste. Los ejemplos ejecutables están en `apps/web/layers/base/app/theme/tailwind-lint.test.ts`.
+
 ## Para aprender más (gratis)
 
 - [Nuxt UI — Design system](https://ui.nuxt.com/docs/getting-started/theme/design-system) y [CSS variables](https://ui.nuxt.com/docs/getting-started/theme/css-variables): la fuente de las secciones 2, 5 y 6.

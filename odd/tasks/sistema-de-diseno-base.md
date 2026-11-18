@@ -28,7 +28,7 @@ Out of scope: the color mode toggle and the invoice design spike belong to the "
 |---|---|---|---|---|---|---|---|
 | T1 | Registrar decisiones de diseño (ADRs) | S1–S5 | 45 min | — | inline | done | `ebed9bf` |
 | T2 | Configurar tokens y tema de Nuxt UI | S1, S2 | 120 min | T1 | inline | done | `5d3b963`, `f4130c2` |
-| T3 | Regla de lint contra valores sueltos | S3 | 60 min | T2 | inline | pending | |
+| T3 | Regla de lint contra valores sueltos | S3 | 60 min | T2 | inline | done (pending commit) | |
 | T4 | Página /design de muestra | S4 | 120 min | T2 | inline | pending | |
 | T5 | Sistema de diseño en Claude Design | S5 | 60 min | T2 | inline | pending | |
 
@@ -42,3 +42,4 @@ Out of scope: the color mode toggle and the invoice design spike belong to the "
 - **L3** (2026-11-13) — ODD document and its 5 tasks approved ("SI"). Notion tasks created as children of the story, week of 2026-11-09. ODD docs are versioned in the public repo ("Subelos a github").
 - **L4** (2026-11-17) — T2 started. Ronald asked what the tokens are based on: "I want to really understand". He chose "The guide first": `docs/sistema-de-diseno.md` explains the token layers, the OKLCH scale method and WCAG contrast before any code. Measured: `#247ba0` sits on step 600 (Nuxt UI uses 500 in light mode), `#2f0147` on 950, and `--ui-text-muted` (`#717c89`, 4.25:1 on white) fails AA. Ronald decides these three points during T2.
 - **L5** (2026-11-17) — Ronald: "For learning purposes I don't want you to give me recommendations. I prefer you to recommend me after I make a choice." Decisions ADR 0025-0033 (shades per mode, `brand-*` names, white background, status colors on 700, `text-dimmed` = `text-muted`). The AA test found that Nuxt UI placeholders use `text-dimmed` (2.58:1), which led to ADR 0033. T2 done: 47 tests, lint and typecheck pass.
+- **L6** (2026-11-18) — T3 started. Ronald chose semantic names only (ADR 0036): "I choose B, only semantic names but If in a near future we need more freedom we do something". RED observed: 10 of 23 cases in `tailwind-lint.test.ts` failed before the rules existed. GREEN: `no-unknown-classes` and `no-restricted-classes` (arbitrary `[...]`/`(...)`, any color with a shade, `black`/`white`) on `**/*.vue`. Palette names checked against Tailwind 4.3 `theme.css` (includes `mauve`, `olive`, `mist`, `taupe`). The test avoids `node:url` because `app/` is typechecked without Node types. Lint, typecheck and 70 tests pass.
