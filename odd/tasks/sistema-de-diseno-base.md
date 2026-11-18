@@ -29,8 +29,8 @@ Out of scope: the color mode toggle and the invoice design spike belong to the "
 | T1 | Registrar decisiones de diseño (ADRs) | S1–S5 | 45 min | — | inline | done | `ebed9bf` |
 | T2 | Configurar tokens y tema de Nuxt UI | S1, S2 | 120 min | T1 | inline | done | `5d3b963`, `f4130c2` |
 | T3 | Regla de lint contra valores sueltos | S3 | 60 min | T2 | inline | done | `2d06cfd` |
-| T4 | Página /design de muestra | S4 | 120 min | T2 | inline | pending | |
-| T5 | Sistema de diseño en Claude Design | S5 | 60 min | T2 | inline | pending | |
+| T4 | Página /design de muestra | S4 | 120 min | T2 | inline | done | `afeaf2d`, `f6b169e` |
+| T5 | Sistema de diseño en Claude Design | S5 | 60 min | T2 | inline | done | `e6fd1f9` |
 
 - T1: ADRs for palette and dark mode, typography, radius and scales, the `/design` page, the Claude Design → code workflow and the per-module cadence. Adds the design workflow to `CLAUDE.md`.
 - T2: AA contrast is checked by a readable Vitest test that computes the ratio of each token pair in light and dark mode.
