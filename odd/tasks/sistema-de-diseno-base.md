@@ -28,7 +28,7 @@ Out of scope: the color mode toggle and the invoice design spike belong to the "
 |---|---|---|---|---|---|---|---|
 | T1 | Registrar decisiones de diseño (ADRs) | S1–S5 | 45 min | — | inline | done | `ebed9bf` |
 | T2 | Configurar tokens y tema de Nuxt UI | S1, S2 | 120 min | T1 | inline | done | `5d3b963`, `f4130c2` |
-| T3 | Regla de lint contra valores sueltos | S3 | 60 min | T2 | inline | done (pending commit) | |
+| T3 | Regla de lint contra valores sueltos | S3 | 60 min | T2 | inline | done | `2d06cfd` |
 | T4 | Página /design de muestra | S4 | 120 min | T2 | inline | pending | |
 | T5 | Sistema de diseño en Claude Design | S5 | 60 min | T2 | inline | pending | |
 
