@@ -26,8 +26,8 @@ Out of scope: real login and "Cerrar sesión" (Login story); content of the Fact
 
 | ID | Task (same name in Notion) | Specs | Est. | Depends on | Route | Status | Commit |
 |---|---|---|---|---|---|---|---|
-| T1 | Registrar decisiones de layout (ADRs) | S2–S9 | 60 min | — | inline | done (ADRs 0038–0046), awaiting commit | |
-| T2 | Diseñar layout en Claude Design | S1–S6, S10 | 60 min | T1 | inline | pending | |
+| T1 | Registrar decisiones de layout (ADRs) | S2–S9 | 60 min | — | inline | done (ADRs 0038–0046) | `80bf758` |
+| T2 | Diseñar layout en Claude Design | S1–S6, S10 | 60 min | T1 | inline | done ([canvas](https://claude.ai/artifact/3g7JXRsoMDMz3JG8vZAunZ)) | |
 | T3 | Diseñar pantalla Nueva factura 31/32 | S10 | 120 min | T2 | inline | pending | |
 | T4 | Store de sesión simulada con Pinia | S9 | 60 min | T1 | inline | pending | |
 | T5 | Configurar Playwright | S1 | 60 min | — | inline | pending | |
@@ -44,3 +44,4 @@ Out of scope: real login and "Cerrar sesión" (Login story); content of the Fact
 - **L1** (2026-11-18) — Ronald approved starting the story from `/hoy` ("Yes"). Decisions asked one at a time, options without recommendation (ADR 0034). Nuxt UI v4 docs (Context7) checked: `UDashboardGroup` stores the sidebar size and collapsed state in a cookie by default (`storage: 'cookie'`, `persistent: true`); `UDashboardSidebar` has `collapsible` and opens as a slideover on mobile, closing on route change. Pinia and Playwright are not installed in `apps/web` yet.
 - **L2** (2026-11-18) — ODD document and its 6 tasks approved ("Yes"). Notion tasks created as children of the story, week of 2026-11-16, with "Bloqueado Por" as in the Depends column; story set to "En Progreso". Branch `feat/layout-y-navegacion` created from `feat/sistema-de-diseno-base` (`0df4ae0`), because that branch is not merged yet.
 - **L3** (2026-11-19) — T1 started. While giving the reason for the two-state button, Ronald said "dark theme as default", which conflicted with ADR 0018 ("Seguir al sistema"). Asked; he chose "Dark by default". S6 rewritten, new ADR 0046, ADR 0018 status updated; T6 gains one E2E case (first visit starts dark). Ronald answers ADR reasons in English; Claude translates them to Spanish.
+- **L4** (2026-11-19) — T2 done; Ronald approved the design ("Approved"). Canvas "FacturaRD — Layout" (https://claude.ai/artifact/3g7JXRsoMDMz3JG8vZAunZ): 8 boards, desktop expanded/collapsed and mobile closed/drawer open, dark and light. Approved assumptions: mock session "Ana Pérez" / "Comercial Ejemplo SRL" (T4); collapsed sidebar shows "F" until there is a logo; placeholder text "Aquí verás tus facturas" / "Esta sección está en construcción." Active item = `bg-elevated` + `text-highlighted` + `primary` icon, because `primary` text on `bg-elevated` in light mode is 4.24:1 (fails AA 4.5:1). Design system README updated to "dark by default" (ADR 0046). Pending for T6: `docs/sistema-de-diseno.md` line on the initial mode still says "seguir al sistema"; update it when the code changes.
