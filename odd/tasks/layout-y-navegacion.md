@@ -1,0 +1,46 @@
+# Layout y navegación
+
+Objective: the app shell in the `base` layer (collapsible sidebar, header, mobile drawer) and the design of the create-invoice screen as a spike (ADR 0024).
+Branch: `feat/layout-y-navegacion` · Delivery: one PR for the story · Test runners: Vitest (`bun run test`) and Playwright (installed in T5).
+Notion story: "Layout y navegación" (Fase 1 · Base del sistema).
+
+## Specs
+
+- **S1** — Story criteria, verbatim from Notion: "Layout responsivo (escritorio y móvil)", "Navegación completa por teclado", "Indica la sección activa".
+- **S2** — Desktop navigation: "Collapsible sidebar". The sidebar can shrink to icons only; collapsed items show their label in a tooltip.
+  - Collapsed state: "Remember it" — saved in a cookie, so it stays after reload.
+- **S3** — Mobile navigation: "Drawer (hamburger)". A ≡ button in the header opens the menu over the content; it closes when the route changes.
+- **S4** — Menu items and order: "Facturas, Clientes, Servicios".
+- **S5** — User area: "Header, top right". The header shows the page title on the left and the company name, the light/dark button and the user menu on the right, also on mobile.
+- **S6** — Light/dark control: "Two-state button" (`UColorModeButton`, ☀/☾). Initial mode: "Dark by default" (ADR 0046, replaces the initial mode of ADR 0018).
+- **S7** — Root route: "Redirect to /facturas". Until Fase 2, `/facturas` is a placeholder page.
+- **S8** — Placeholder pages: "Create empty layers now". This story creates the `facturas`, `clientes` and `servicios` layers, each with only a placeholder page. Updates the timing of ADR 0009.
+- **S9** — Session data: "Pinia store with mock data". A session store (user + active company) with fixed mock values; the Login story fills it for real and adds "Cerrar sesión".
+- **S10** — Design first (ADR 0023, 0024): the layout is designed in the Claude Design artifact (ADR 0037) in light and dark mode, desktop (expanded and collapsed) and mobile, and Ronald approves it before code. The create-invoice 31/32 screen is designed in this story; its code stays in Fase 2.
+
+Assumptions (to confirm in the design tasks): the app name in the sidebar is "FacturaRD", as in the Notion project; the user menu shows only the user name until the Login story. The create-invoice design decisions are asked one at a time at the start of T3, using `docs/dgii/`.
+
+Out of scope: real login and "Cerrar sesión" (Login story); content of the Facturas, Clientes and Servicios pages (their stories).
+
+## Tasks
+
+| ID | Task (same name in Notion) | Specs | Est. | Depends on | Route | Status | Commit |
+|---|---|---|---|---|---|---|---|
+| T1 | Registrar decisiones de layout (ADRs) | S2–S9 | 60 min | — | inline | done (ADRs 0038–0046), awaiting commit | |
+| T2 | Diseñar layout en Claude Design | S1–S6, S10 | 60 min | T1 | inline | pending | |
+| T3 | Diseñar pantalla Nueva factura 31/32 | S10 | 120 min | T2 | inline | pending | |
+| T4 | Store de sesión simulada con Pinia | S9 | 60 min | T1 | inline | pending | |
+| T5 | Configurar Playwright | S1 | 60 min | — | inline | pending | |
+| T6 | Layout con sidebar, header y layers vacías | S1–S9 | 120 min | T2, T4, T5 | inline | pending | |
+
+- T1: one ADR per decision (S2–S9), with the options considered and Ronald's reasons. The S8 ADR references ADR 0009.
+- T3: a design spike only; it lists the fields the invoice needs from clientes and servicios, so their stories can use them.
+- T4: installs `@pinia/nuxt` in `apps/web`; the store lives in the `base` layer; Vitest tests for its initial mock state.
+- T5: installs `@playwright/test`, adds the `test:e2e` script and one smoke test. Kept separate so T6 can write its E2E tests RED first.
+- T6: `UDashboardGroup` + `UDashboardSidebar` (`collapsible`) + `UNavigationMenu` in the `base` layout. E2E tests (RED first): keyboard-only navigation, active item marked, drawer on mobile width, `/` → `/facturas`, light/dark toggle, a first visit starts in dark mode, collapsed state kept after reload.
+
+## Log
+
+- **L1** (2026-11-18) — Ronald approved starting the story from `/hoy` ("Yes"). Decisions asked one at a time, options without recommendation (ADR 0034). Nuxt UI v4 docs (Context7) checked: `UDashboardGroup` stores the sidebar size and collapsed state in a cookie by default (`storage: 'cookie'`, `persistent: true`); `UDashboardSidebar` has `collapsible` and opens as a slideover on mobile, closing on route change. Pinia and Playwright are not installed in `apps/web` yet.
+- **L2** (2026-11-18) — ODD document and its 6 tasks approved ("Yes"). Notion tasks created as children of the story, week of 2026-11-16, with "Bloqueado Por" as in the Depends column; story set to "En Progreso". Branch `feat/layout-y-navegacion` created from `feat/sistema-de-diseno-base` (`0df4ae0`), because that branch is not merged yet.
+- **L3** (2026-11-19) — T1 started. While giving the reason for the two-state button, Ronald said "dark theme as default", which conflicted with ADR 0018 ("Seguir al sistema"). Asked; he chose "Dark by default". S6 rewritten, new ADR 0046, ADR 0018 status updated; T6 gains one E2E case (first visit starts dark). Ronald answers ADR reasons in English; Claude translates them to Spanish.
