@@ -30,7 +30,7 @@ Out of scope: real login and "Cerrar sesión" (Login story); content of the Fact
 | T2 | Diseñar layout en Claude Design | S1–S6, S10 | 60 min | T1 | inline | done ([canvas](https://claude.ai/artifact/3g7JXRsoMDMz3JG8vZAunZ)) | `9e05297` |
 | T3 | Diseñar pantalla Nueva factura 31/32 | S10 | 120 min | T2 | inline | done (ADRs 0047–0058, [canvas](https://claude.ai/artifact/3g7JXRsoMDMz3JG8vZAunZ) v20) | `d84acc4`, `3b1468e` |
 | T4 | Store de sesión simulada con Pinia | S9 | 60 min | T1 | inline | done (RED → GREEN, 3 tests) | `c8f6bbb` |
-| T5 | Configurar Playwright | S1 | 60 min | — | inline | done (smoke test passes in 3 browsers) | `7610a51`, `d1cc7bd` |
+| T5 | Configurar Playwright | S1 | 60 min | — | inline | done (smoke test passes in 3 browsers) | `7610a51`, `d1cc7bd`, `4134732` |
 | T6 | Layout con sidebar, header y layers vacías | S1–S9 | 120 min | T2, T4, T5 | inline | pending | |
 
 - T1: one ADR per decision (S2–S9), with the options considered and Ronald's reasons. The S8 ADR references ADR 0009.
