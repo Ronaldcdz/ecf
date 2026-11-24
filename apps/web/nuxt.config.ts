@@ -8,7 +8,7 @@ export default defineNuxtConfig({
     // Typecheck the Playwright files too (paths are relative to `.nuxt/`).
     nodeTsConfig: {
       compilerOptions: { types: ['node'] },
-      include: ['../playwright.config.ts', '../layers/*/e2e/**/*'],
+      include: ['../playwright.config.ts', '../playwright/**/*', '../layers/*/e2e/**/*'],
     },
   },
 })

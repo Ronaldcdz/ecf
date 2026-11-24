@@ -37,6 +37,10 @@ En palabras de Ronald: "Es la forma más segura de probar WebKit."
 - `playwright.config.ts` arranca el contenedor con `webServer` y el proyecto `webkit` se conecta a él con `connectOptions`. `exposeNetwork: '<loopback>'` deja que el navegador del contenedor abra el servidor de Nuxt de la máquina. `bun run test:e2e` sigue siendo un solo comando.
 - Playwright detiene el contenedor al terminar con `SIGTERM` (`gracefulShutdown`), y `--rm` lo borra. Sin eso, el contenedor quedaba corriendo después de los tests.
 - La etiqueta de la imagen sale de la versión instalada de `@playwright/test`, así que cliente e imagen siempre coinciden.
-- Hace falta Docker en cada máquina que corra los tests E2E. La primera vez se descarga la imagen (3.68 GB en disco).
+- Hace falta Docker solo cuando corre WebKit: con `--project=chromium` o `--project=firefox` el contenedor no arranca (Playwright 1.65 no tiene `webServer` por proyecto, así que `playwright/runs-webkit.ts` lee `--project`, con tests).
+- La imagen (3.68 GB en disco) se descarga una vez con `docker pull`. Si falta, los tests fallan enseguida con el comando exacto, en vez de descargarla dentro del tiempo de arranque.
+- El puerto 3123 solo escucha en `127.0.0.1`: el servidor de Playwright no tiene contraseña, así que otros equipos de la red no deben alcanzarlo.
+- Playwright espera la línea `Listening on ws://` del propio servidor, no solo el puerto. Así puede borrar antes un contenedor que quedó de una corrida interrumpida, y nunca se conecta a otro servidor que ocupe el puerto (si lo hay, `docker run` falla con "address already in use").
+- El volumen de Docker `ecf-playwright-webkit-home` guarda la descarga de `npx`, así que solo la primera corrida necesita bajar Playwright dentro del contenedor.
 - Dentro del contenedor se usa `npx`, que viene en la imagen. No toca las dependencias del proyecto ni `bun.lock`.
 - El sistema de Ronald no cambia: no se instalaron librerías con `sudo`.

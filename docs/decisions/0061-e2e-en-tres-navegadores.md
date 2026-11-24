@@ -24,6 +24,6 @@ En palabras de Ronald: "Para cubrir todos los casos borde posibles."
 
 ## Consecuencias
 
-- `bunx playwright install` descarga los tres navegadores en cada máquina y, más adelante, en CI.
-- En Linux, WebKit y Firefox pueden necesitar librerías del sistema (`playwright install --with-deps`).
-- Si los tests se vuelven lentos, se puede correr un solo proyecto mientras se escribe (`--project=chromium`).
+- `bunx playwright install chromium firefox` descarga Chromium y Firefox en cada máquina. WebKit viene en la imagen de Docker ([0063](0063-webkit-en-docker.md)).
+- En Linux, Firefox puede necesitar librerías del sistema (`playwright install --with-deps`).
+- Si los tests se vuelven lentos, se puede correr un solo proyecto mientras se escribe (`--project=chromium`). Así tampoco arranca Docker.
