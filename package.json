@@ -9,6 +9,7 @@
     "lint": "bun run --filter '@ecf/*' lint",
     "typecheck": "bun run --filter '@ecf/*' typecheck",
     "test": "bun run --filter '@ecf/*' test",
+    "test:e2e": "bun run --filter '@ecf/web' test:e2e",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepare": "husky"

@@ -11,7 +11,8 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "typecheck": "nuxt typecheck",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run --passWithNoTests",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@ecf/shared": "workspace:*",
@@ -25,6 +26,9 @@
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.17.0",
+    "@nuxt/test-utils": "^4.4.0",
+    "@playwright/test": "^1.65.1",
+    "@types/node": "^26.6.6",
     "eslint": "^10.14.0",
     "eslint-plugin-better-tailwindcss": "4.11.0",
     "typescript": "~6.0.3",
