@@ -52,12 +52,21 @@ export default defineConfig<ConfigOptions>({
   // Fail if a stray `test.only` reaches CI.
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
+  // Three workers (ADR 0064): each worker starts its own Nuxt dev server (worker-scoped fixture). With 6 servers
+  // compiling at once, the first page in most of them took over 30 s; 3 pass reliably.
+  workers: 3,
   reporter: process.env.CI ? 'github' : 'list',
   use: {
     trace: 'on-first-retry',
     nuxt: {
       rootDir: fileURLToPath(new URL('.', import.meta.url)),
       dev: true,
+      // One Vite cache folder per parallel worker (ADR 0066). Each worker runs its own dev
+      // server; with one shared folder, a server rebuilding the cache broke the page another
+      // server was loading. `TEST_PARALLEL_INDEX` (0..workers-1) is reused after a restart.
+      nuxtConfig: {
+        vite: { cacheDir: `node_modules/.cache/vite-e2e-${process.env.TEST_PARALLEL_INDEX ?? 'main'}` },
+      },
     },
   },
   webServer: runsWebkit(process.argv) ? webkitServer : undefined,
