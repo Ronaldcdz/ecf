@@ -42,6 +42,7 @@
         "vue-router": "^5.4.0",
       },
       "devDependencies": {
+        "@iconify-json/lucide": "^1.2.159",
         "@nuxt/eslint": "^1.17.0",
         "@nuxt/test-utils": "^4.4.0",
         "@playwright/test": "^1.65.1",
@@ -311,6 +312,8 @@
     "@humanwhocodes/module-importer": ["@humanwhocodes/module-importer@1.0.1", "", {}, "sha512-bxveV4V8v5Yb4ncFTT3rPSgZBOpCkjfK0y4oVVVJwIuDVBRMDXrPyXRL988i5ap9m9bnyEEjWfm5WkBmtffLfA=="],
 
     "@humanwhocodes/retry": ["@humanwhocodes/retry@0.4.3", "", {}, "sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ=="],
+
+    "@iconify-json/lucide": ["@iconify-json/lucide@1.2.159", "", { "dependencies": { "@iconify/types": "*" } }, "sha512-rE8dHb2LRSR2Vl6L6LspAJ83uPNKOIbEE8BLLo/ObQT8xHIEE3zmwIpO9LcZPjTsEnICSxWPFJcJ0Q38nxuZPw=="],
 
     "@iconify/collections": ["@iconify/collections@1.0.761", "", { "dependencies": { "@iconify/types": "*" } }, "sha512-ndXwMhY+SZv1OB13kieL5z70yUVkPWNI+aHPZjfpsLdenL8X42+Doo5mrADcfufPSq4Z/KTGkyq/G97b0uMu5g=="],
 
