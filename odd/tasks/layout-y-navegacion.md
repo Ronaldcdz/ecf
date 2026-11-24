@@ -29,7 +29,7 @@ Out of scope: real login and "Cerrar sesión" (Login story); content of the Fact
 | T1 | Registrar decisiones de layout (ADRs) | S2–S9 | 60 min | — | inline | done (ADRs 0038–0046) | `80bf758` |
 | T2 | Diseñar layout en Claude Design | S1–S6, S10 | 60 min | T1 | inline | done ([canvas](https://claude.ai/artifact/3g7JXRsoMDMz3JG8vZAunZ)) | `9e05297` |
 | T3 | Diseñar pantalla Nueva factura 31/32 | S10 | 120 min | T2 | inline | done (ADRs 0047–0058, [canvas](https://claude.ai/artifact/3g7JXRsoMDMz3JG8vZAunZ) v20) | `d84acc4`, `3b1468e` |
-| T4 | Store de sesión simulada con Pinia | S9 | 60 min | T1 | inline | pending | |
+| T4 | Store de sesión simulada con Pinia | S9 | 60 min | T1 | inline | done (RED → GREEN, 3 tests) | pending review |
 | T5 | Configurar Playwright | S1 | 60 min | — | inline | pending | |
 | T6 | Layout con sidebar, header y layers vacías | S1–S9 | 120 min | T2, T4, T5 | inline | pending | |
 
@@ -53,3 +53,4 @@ Out of scope: real login and "Cerrar sesión" (Login story); content of the Fact
 - **L7** (2026-11-20) — Field list approved ("Yes"). Nine T3 boards added to the canvas (version 17): desktop dark (31, 32, 32 ≥ RD$250,000, 31 with discounts), desktop light (31, 32 ≥ RD$250,000), mobile (31 dark, summary sheet open, 32 light). 1280 px check (ADR 0051): with the expanded sidebar the form column is ~640 px; the Servicio column is ~224 px without discounts and ~124 px with the discount column on. Waiting for Ronald's approval.
 - **L8** (2026-11-20) — Ronald asked "Why there are two tabs for the invoice types?": the segmented control was a drawing choice, because ADR 0047 did not fix the visual form. He chose "Dropdown (select)" ("Easier to add more invoice types"): ADR 0058, with a link added to 0047. Canvas version 20. The page had saved hand edits 3 minutes earlier (two empty artboards deleted); this publish replaced `Factura.dc.html` and `FacturaMobile.dc.html`, and Ronald was told.
 - **L9** (2026-11-20) — Ronald approved the T3 boards as they are ("Yes"), including the ~124 px Servicio column with discounts on at 1280 px. T3 done; commit pending Ronald's review (ADR 0035). Next unblocked: T4 (Pinia session store) and T5 (Playwright).
+- **L10** (2026-11-24) — `/hoy`: no tasks planned for the week of 2026-11-23; Ronald approved moving T4–T6 to this week ("Yes, go ahead"). T4: `pinia@4.1.0` + `@pinia/nuxt@1.0.3` added to `apps/web` with Bun; module registered in the `base` layer (`@pinia/nuxt` scans `app/stores` in every layer). RED: `session.test.ts` failed to import `./session`; GREEN: setup store `useSessionStore` (`user`, `activeCompany`). Lint, typecheck, test pass (83 tests). Session types stay local until Login defines the API response in `packages/shared`. Commit pending Ronald's review (ADR 0035).
