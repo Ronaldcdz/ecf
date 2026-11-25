@@ -8,6 +8,7 @@ import {
 
 // /design: live showcase of the design tokens (S4, ADR 0022). Public in production,
 // so every value here is sample data.
+definePageMeta({ public: true })
 useHead({ title: 'Sistema de diseño' })
 
 const palettes = paletteShowcase()

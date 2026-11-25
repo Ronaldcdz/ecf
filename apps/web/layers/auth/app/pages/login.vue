@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import type { LoginData, LoginInput } from '@ecf/shared'
 import { AuthError } from '../auth/login-request'
+import { safeRedirect } from '../auth/route-guard'
 
-// Its own page: no sidebar or header (ADR 0067).
-definePageMeta({ layout: false })
+// Its own page: no sidebar or header (ADR 0067). Public: no session needed (ADR 0084).
+definePageMeta({ layout: false, public: true })
 useHead({ title: 'Iniciar sesión' })
 
 const auth = useAuth()
+const route = useRoute()
 const state = reactive<LoginInput>({ email: '', password: '' })
 const loading = ref(false)
 const errorMessage = ref('')
@@ -18,7 +20,7 @@ async function signIn(data: LoginData) {
   errorMessage.value = ''
   try {
     await auth.login(data)
-    await navigateTo('/facturas')
+    await navigateTo(safeRedirect(route.query.redirect))
   } catch (error) {
     errorMessage.value =
       error instanceof AuthError
