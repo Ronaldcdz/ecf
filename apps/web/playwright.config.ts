@@ -65,6 +65,9 @@ export default defineConfig<ConfigOptions>({
       // server; with one shared folder, a server rebuilding the cache broke the page another
       // server was loading. `TEST_PARALLEL_INDEX` (0..workers-1) is reused after a restart.
       nuxtConfig: {
+        // The DevTools bar floats over the bottom of the page and blocks clicks on anything
+        // there (for example "Cerrar sesión" in the mobile drawer). Tests run without it.
+        devtools: { enabled: false },
         vite: { cacheDir: `node_modules/.cache/vite-e2e-${process.env.TEST_PARALLEL_INDEX ?? 'main'}` },
       },
     },
