@@ -16,10 +16,10 @@ const items: NavigationMenuItem[] = [
 
 const session = useSessionStore()
 
-// Until the Login story, the user menu shows only the user name (S5, S9).
-const userMenu = computed<DropdownMenuItem[]>(() => [
-  { label: session.user.name, type: 'label' },
-])
+// The layout shows once someone signed in; the user is `null` only before that.
+// T7 of the login story moves this area to the sidebar footer (ADR 0072).
+const userName = computed(() => session.user?.name ?? '')
+const userMenu = computed<DropdownMenuItem[]>(() => [{ label: userName.value, type: 'label' }])
 
 // Each page sets `definePageMeta({ title })`; the header shows it.
 const route = useRoute()
@@ -59,16 +59,16 @@ const title = computed(() => (typeof route.meta.title === 'string' ? route.meta.
           </template>
 
           <template #right>
-            <span class="truncate text-sm text-muted">{{ session.activeCompany.name }}</span>
+            <span class="truncate text-sm text-muted">{{ session.activeCompany?.name }}</span>
             <UColorModeButton />
             <UDropdownMenu :items="userMenu">
               <UButton
-                :label="session.user.name"
+                :label="userName"
                 icon="i-lucide-circle-user"
                 color="neutral"
                 variant="ghost"
                 :ui="{ label: 'hidden sm:inline' }"
-                :aria-label="session.user.name"
+                :aria-label="userName"
               />
             </UDropdownMenu>
           </template>

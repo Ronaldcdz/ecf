@@ -5,6 +5,12 @@
  */
 import type { Page } from '@playwright/test'
 import { expect, test } from '@nuxt/test-utils/playwright'
+import { signIn } from '../../../playwright/sign-in'
+
+// The app shell is for someone who is signed in (login story, S3).
+test.beforeEach(async ({ context, baseURL }) => {
+  await signIn(context, baseURL)
+})
 
 const MENU = ['Facturas', 'Clientes', 'Servicios'] as const
 
