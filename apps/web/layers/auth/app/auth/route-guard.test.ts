@@ -77,6 +77,20 @@ describe('guardRoute', () => {
     expect(decision).toEqual({ path: '/facturas' })
   })
 
+  it.each(['/Login', '/LOGIN', '/login/', '/Login/'])(
+    'treats %s as /login too: the router opens the same page (S6)',
+    (path) => {
+      const decision = guardRoute({
+        path,
+        fullPath: path,
+        isPublic: true,
+        isLoggedIn: true,
+      })
+
+      expect(decision).toEqual({ path: '/facturas' })
+    },
+  )
+
   it('lets someone who is signed in open another public page', () => {
     const decision = guardRoute({
       path: '/design',
@@ -119,6 +133,7 @@ describe('safeRedirect: where to go after a login', () => {
     ['a javascript link', 'javascript:alert(1)'],
     ['a tab inside, which browsers ignore', '/\t/evil.example/robo'],
     ['a line break inside, which browsers ignore', '/\n/evil.example/robo'],
+    ['a DEL character inside', '/\u007f/evil.example/robo'],
   ])(
     'goes to /facturas instead of %s (it would leave the app)',
     (_label, value) => {
@@ -126,10 +141,14 @@ describe('safeRedirect: where to go after a login', () => {
     },
   )
 
-  it.each(['/login', '/login?redirect=%2Fclientes'])(
-    'goes to /facturas instead of %s (it would loop)',
-    (value) => {
-      expect(safeRedirect(value)).toBe('/facturas')
-    },
-  )
+  it.each([
+    '/login',
+    '/login?redirect=%2Fclientes',
+    '/Login',
+    '/LOGIN?x=1',
+    '/login/',
+    '/Login/#top',
+  ])('goes to /facturas instead of %s (it would loop)', (value) => {
+    expect(safeRedirect(value)).toBe('/facturas')
+  })
 })

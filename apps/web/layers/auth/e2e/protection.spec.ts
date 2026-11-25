@@ -127,6 +127,14 @@ test.describe('with a session', () => {
     await expect(page).toHaveURL(/\/facturas$/)
   })
 
+  for (const path of ['/Login', '/LOGIN', '/login/']) {
+    test(`${path} sends you to /facturas too (S6)`, async ({ page, goto }) => {
+      await goto(path, { waitUntil: 'hydration' })
+
+      await expect(page).toHaveURL(/\/facturas$/)
+    })
+  }
+
   test('/design stays open', async ({ page, goto }) => {
     await goto('/design', { waitUntil: 'hydration' })
 

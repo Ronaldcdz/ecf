@@ -14,13 +14,18 @@ export type RouteGuardDecision = {
   query?: { redirect: string }
 } | null
 
+// The router opens the same page for "/Login" and "/login/", so compare the normalized path.
+function isLoginPath(path: string): boolean {
+  return path.toLowerCase().replace(/\/+$/, '') === LOGIN_PAGE
+}
+
 export function guardRoute({
   path,
   fullPath,
   isPublic,
   isLoggedIn,
 }: RouteGuardInput): RouteGuardDecision {
-  if (isLoggedIn && path === LOGIN_PAGE) return { path: DEFAULT_PAGE }
+  if (isLoggedIn && isLoginPath(path)) return { path: DEFAULT_PAGE }
   if (!isLoggedIn && !isPublic)
     return { path: LOGIN_PAGE, query: { redirect: fullPath } }
   return null
@@ -34,12 +39,13 @@ export function safeRedirect(value: unknown): string {
   if (typeof value !== 'string') return DEFAULT_PAGE
 
   // Browsers drop tabs and line breaks inside a URL, so "/\t/evil.example" would become "//evil.example".
-  const hasControlCharacter = [...value].some(
-    (character) => character.charCodeAt(0) < 32,
-  )
+  const hasControlCharacter = [...value].some((character) => {
+    const code = character.charCodeAt(0)
+    return code < 32 || code === 127
+  })
   const staysInApp =
     value.startsWith('/') && !value.startsWith('//') && !value.startsWith('/\\')
-  const isLoginPage = /^\/login(?:[/?#]|$)/.test(value)
+  const isLoginPage = /^\/login(?:[/?#]|$)/i.test(value)
 
   return staysInApp && !hasControlCharacter && !isLoginPage
     ? value
