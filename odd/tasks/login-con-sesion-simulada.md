@@ -14,14 +14,14 @@ Notion story: "Login con sesión simulada" (Fase 1 · Base del sistema).
 - **S6** — A logged-in user who opens `/login` goes to `/facturas`.
 - **S7** — The whole user area (name + "Cerrar sesión") moves to the sidebar footer; the header dropdown goes away. Logout clears the cookie and the Pinia store, then goes to `/login`. It replaces ADR 0041.
 - **S8** — The login screen and the new sidebar footer are designed in Claude Design and approved before code (ADR 0023).
-- *Assumption:* the demo account values (for example `demo@facturard.do`). Ronald confirms them before they are written.
+- Demo account (approved by Ronald, L3): `demo@facturard.do` / `demo1234`.
 
 ## Tasks
 
 | ID | Task | Specs | Est. | Depends | Route | Status | Commit |
 |---|---|---|---|---|---|---|---|
-| T1 | Register decisions (ADRs 0067–0073) | S1–S7 | 60 min | — | inline | done (7 ADRs; 0041 marked as replaced) | commit pending review |
-| T2 | Design login page + sidebar user area in Claude Design | S1, S2, S4, S7, S8 | 90 min | T1 | inline | pending | — |
+| T1 | Register decisions (ADRs 0067–0073) | S1–S7 | 60 min | — | inline | done (7 ADRs; 0041 marked as replaced) | `2b8df6e` |
+| T2 | Design login page + sidebar user area in Claude Design | S1, S2, S4, S7, S8 | 90 min | T1 | inline | done ([canvas](https://claude.ai/artifact/3g7JXRsoMDMz3JG8vZAunZ), 8 login boards) | commit pending review |
 | T3 | Login schemas in `packages/shared` (request and response) + tests | S2 | 45 min | T1 | inline | pending | — |
 | T4 | Mock route `/api/auth/login` + `useAuth` composable (cookie, login, logout) + tests | S2, S3, S7 | 90 min | T3 | inline | pending | — |
 | T5 | Login page and form (demo button, errors) + E2E | S1, S2, S4 | 120 min | T2, T4 | inline | pending | — |
@@ -37,3 +37,5 @@ Notes:
 
 - **L1** (2026-11-25) — Original request, from the Notion story: "Como usuario, quiero iniciar sesión, para que solo yo acceda a la facturación del negocio." Criteria: "Formulario validado con Zod y mensajes de error claros", "Rutas protegidas por middleware", "Botón \"Entrar como demo\" para reclutadores".
 - **L2** (2026-11-25) — `/hoy`: no tasks for the week of 2026-11-23. Layout story merged (PR #3). Ronald chose to start this story. Decisions asked one at a time, options without recommendation (ADR 0034): own page `/login` without layout; email + password with one fixed demo account; session in a cookie; demo button fills the form only; return to the requested page after login; logout and user area (name + logout) in the sidebar footer, replacing ADR 0041; logged-in users go to `/facturas`; wrong credentials shown in an alert above the form. Document and 7 tasks approved ("Go ahead").
+- **L3** (2026-11-25) — T1 done, committed as `2b8df6e`. Ronald approved the demo account values: `demo@facturard.do` / `demo1234`.
+- **L4** (2026-11-25) — T2 done; Ronald approved the boards ("Approved"). Canvas "FacturaRD — Layout" (https://claude.ai/artifact/3g7JXRsoMDMz3JG8vZAunZ), version 27: login in 8 boards (desktop dark: empty, demo filled, field errors, wrong credentials; desktop light: empty, wrong credentials; mobile: dark empty, light with field errors). The sidebar footer (avatar, name, "Cerrar sesión"; collapsed: avatar and logout icon) replaces the header user menu in the layout and both "Nueva factura" boards. Approved assumptions: subtitle "Entra para emitir y revisar tus facturas electrónicas."; no show-password button, no forgot-password link, no logo; 44 px inputs and buttons; helper text "Rellena el formulario con una cuenta de prueba." under the demo button. Field error texts: "Escribe un correo válido", "Escribe tu contraseña". On mobile the user area lives only in the drawer (ADR 0072). A stray paragraph "Una tira de go" remains at the end of `Main.dc.html` (not ours; left alone).
