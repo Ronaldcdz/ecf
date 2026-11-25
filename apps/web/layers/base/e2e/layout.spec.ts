@@ -5,6 +5,7 @@
  */
 import type { Page } from '@playwright/test'
 import { expect, test } from '@nuxt/test-utils/playwright'
+import { SESSION_COOKIE } from '../../auth/app/auth/session-cookie'
 import { signIn } from '../../../playwright/sign-in'
 
 // The app shell is for someone who is signed in (login story, S3).
@@ -56,12 +57,41 @@ test.describe('desktop', () => {
     await expect(page.getByRole('link', { name: 'Servicios', exact: true })).toHaveAttribute('aria-current', 'page')
   })
 
-  test('header shows the page title, company and user (S5, S9)', async ({ page, goto }) => {
+  test('header shows the page title and company, and no user menu (S5, S9, ADR 0072)', async ({ page, goto }) => {
     await goto('/facturas', { waitUntil: 'hydration' })
 
     await expect(page.getByRole('heading', { name: 'Facturas', level: 1 })).toBeVisible()
     await expect(page.getByText('Comercial Ejemplo SRL')).toBeVisible()
-    await expect(page.getByRole('button', { name: 'Ana Pérez' })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Ana Pérez' })).toHaveCount(0)
+  })
+
+  test('the sidebar footer shows the user name and "Cerrar sesión" (S7, ADR 0072)', async ({ page, goto }) => {
+    await goto('/facturas', { waitUntil: 'hydration' })
+
+    await expect(page.getByText('Ana Pérez')).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Cerrar sesión' })).toBeVisible()
+  })
+
+  test('"Cerrar sesión" clears the session and goes to /login (S7, ADR 0085)', async ({ page, context, goto }) => {
+    await goto('/facturas', { waitUntil: 'hydration' })
+
+    await page.getByRole('button', { name: 'Cerrar sesión' }).click()
+
+    await expect(page).toHaveURL(/\/login$/)
+    expect((await context.cookies()).find(cookie => cookie.name === SESSION_COOKIE)).toBeUndefined()
+
+    // The session is really gone: a protected page sends the visitor back to the login.
+    await goto('/facturas', { waitUntil: 'hydration' })
+    await expect(page).toHaveURL(/\/login/)
+  })
+
+  test('"Cerrar sesión" works from the keyboard (S7)', async ({ page, goto }) => {
+    await goto('/facturas', { waitUntil: 'hydration' })
+
+    await page.getByRole('button', { name: 'Cerrar sesión' }).focus()
+    await page.keyboard.press('Enter')
+
+    await expect(page).toHaveURL(/\/login$/)
   })
 
   test('a first visit starts in dark mode (S6, ADR 0046)', async ({ page, goto }) => {
@@ -92,6 +122,18 @@ test.describe('desktop', () => {
     await goto('/facturas', { waitUntil: 'hydration' })
     await expect(page.getByRole('button', { name: 'Expandir barra lateral' })).toBeVisible()
   })
+
+  test('a collapsed sidebar keeps the avatar and an icon-only "Cerrar sesión" (S7)', async ({ page, goto }) => {
+    await goto('/facturas', { waitUntil: 'hydration' })
+
+    await page.getByRole('button', { name: 'Colapsar barra lateral' }).click()
+
+    await expect(page.getByText('Ana Pérez')).toBeHidden()
+    await expect(page.getByRole('img', { name: 'Ana Pérez' })).toBeVisible()
+    await page.getByRole('button', { name: 'Cerrar sesión' }).click()
+
+    await expect(page).toHaveURL(/\/login$/)
+  })
 })
 
 test.describe('mobile', () => {
@@ -110,11 +152,23 @@ test.describe('mobile', () => {
     await expect(drawer).toBeHidden()
   })
 
-  test('header keeps company, mode button and user menu (S5, ADR 0041)', async ({ page, goto }) => {
+  test('header keeps company and mode button, without the user menu (S5, ADR 0072)', async ({ page, goto }) => {
     await goto('/facturas', { waitUntil: 'hydration' })
 
     await expect(page.getByText('Comercial Ejemplo SRL')).toBeVisible()
     await expect(page.getByRole('button', { name: 'Cambiar a modo claro' })).toBeVisible()
-    await expect(page.getByRole('button', { name: 'Ana Pérez' })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Ana Pérez' })).toHaveCount(0)
+  })
+
+  test('the drawer shows the user area and "Cerrar sesión" works from it (S7, ADR 0072)', async ({ page, goto }) => {
+    await goto('/facturas', { waitUntil: 'hydration' })
+
+    await page.getByRole('button', { name: 'Abrir barra lateral' }).click()
+    const drawer = page.getByRole('dialog')
+    await expect(drawer.getByText('Ana Pérez')).toBeVisible()
+
+    await drawer.getByRole('button', { name: 'Cerrar sesión' }).click()
+
+    await expect(page).toHaveURL(/\/login$/)
   })
 })

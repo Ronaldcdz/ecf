@@ -155,10 +155,10 @@ test.describe('login page', () => {
     await submitButton(page).click()
 
     await expect(page).toHaveURL(/\/facturas$/)
-    await expect(page.getByRole('button', { name: 'Ana Pérez' })).toBeVisible()
+    await expect(page.getByText('Ana Pérez')).toBeVisible()
 
     await page.reload()
-    await expect(page.getByRole('button', { name: 'Ana Pérez' })).toBeVisible()
+    await expect(page.getByText('Ana Pérez')).toBeVisible()
 
     // `expires: -1` is a session cookie: it lasts until the browser closes (ADR 0076).
     const cookie = (await context.cookies()).find((c) => c.name === 'session')
