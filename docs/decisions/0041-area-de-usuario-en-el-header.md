@@ -1,7 +1,7 @@
 # 0041 — Área de usuario en el header, arriba a la derecha
 
 - **Fecha:** 2026-11-18
-- **Estado:** aceptada
+- **Estado:** sustituida por [0072](0072-area-de-usuario-en-el-footer-del-sidebar.md) (solo la parte del menú de usuario)
 - **Decidido por:** Ronald Cadiz
 - **Referencias:** `odd/tasks/layout-y-navegacion.md` (S5); tarea de Notion "Registrar decisiones de layout (ADRs)"
 

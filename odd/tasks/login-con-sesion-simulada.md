@@ -1,0 +1,39 @@
+# Login con sesión simulada
+
+Objective: a simulated login (one fixed demo account) and a protected app, in the `auth` layer; the user area moves to the sidebar footer.
+Branch: `feat/login-sesion-simulada` · Delivery: one PR for the story · Test runners: Vitest (`bun run test`) and Playwright (`bun run test:e2e`).
+Notion story: "Login con sesión simulada" (Fase 1 · Base del sistema).
+
+## Specs
+
+- **S1** — `/login` is its own page, without the dashboard layout (no sidebar, no header).
+- **S2** — Story criterion, verbatim from Notion: "Formulario validado con Zod y mensajes de error claros". Form with email + password; the Zod schema lives in `packages/shared`; field errors show under each field. Only one demo account works. Any other valid pair shows an alert above the form: "Correo o contraseña incorrectos."
+- **S3** — The session is kept in a cookie (`useCookie`), so it survives a reload and the middleware can read it on the server.
+- **S4** — Story criterion, verbatim: "Botón \"Entrar como demo\" para reclutadores". The button only fills the form with the demo email and password; the visitor presses "Entrar".
+- **S5** — Story criterion, verbatim: "Rutas protegidas por middleware". A logged-out visitor goes to `/login`. After login they return to the page they first asked for, or `/facturas` if there was none.
+- **S6** — A logged-in user who opens `/login` goes to `/facturas`.
+- **S7** — The whole user area (name + "Cerrar sesión") moves to the sidebar footer; the header dropdown goes away. Logout clears the cookie and the Pinia store, then goes to `/login`. It replaces ADR 0041.
+- **S8** — The login screen and the new sidebar footer are designed in Claude Design and approved before code (ADR 0023).
+- *Assumption:* the demo account values (for example `demo@facturard.do`). Ronald confirms them before they are written.
+
+## Tasks
+
+| ID | Task | Specs | Est. | Depends | Route | Status | Commit |
+|---|---|---|---|---|---|---|---|
+| T1 | Register decisions (ADRs 0067–0073) | S1–S7 | 60 min | — | inline | done (7 ADRs; 0041 marked as replaced) | commit pending review |
+| T2 | Design login page + sidebar user area in Claude Design | S1, S2, S4, S7, S8 | 90 min | T1 | inline | pending | — |
+| T3 | Login schemas in `packages/shared` (request and response) + tests | S2 | 45 min | T1 | inline | pending | — |
+| T4 | Mock route `/api/auth/login` + `useAuth` composable (cookie, login, logout) + tests | S2, S3, S7 | 90 min | T3 | inline | pending | — |
+| T5 | Login page and form (demo button, errors) + E2E | S1, S2, S4 | 120 min | T2, T4 | inline | pending | — |
+| T6 | Route protection middleware and redirects + E2E | S5, S6 | 90 min | T4, T5 | inline | pending | — |
+| T7 | Move user area and logout to the sidebar footer + update layout E2E | S7 | 90 min | T2, T4 | inline | pending | — |
+
+Notes:
+- Tests are written RED first; each business rule gets a readable test.
+- T1: one ADR per decision; decisions 6 and 6b become one ADR that replaces ADR 0041.
+- Layers do not import each other; the session store stays in `base`.
+
+## Log
+
+- **L1** (2026-11-25) — Original request, from the Notion story: "Como usuario, quiero iniciar sesión, para que solo yo acceda a la facturación del negocio." Criteria: "Formulario validado con Zod y mensajes de error claros", "Rutas protegidas por middleware", "Botón \"Entrar como demo\" para reclutadores".
+- **L2** (2026-11-25) — `/hoy`: no tasks for the week of 2026-11-23. Layout story merged (PR #3). Ronald chose to start this story. Decisions asked one at a time, options without recommendation (ADR 0034): own page `/login` without layout; email + password with one fixed demo account; session in a cookie; demo button fills the form only; return to the requested page after login; logout and user area (name + logout) in the sidebar footer, replacing ADR 0041; logged-in users go to `/facturas`; wrong credentials shown in an alert above the form. Document and 7 tasks approved ("Go ahead").
