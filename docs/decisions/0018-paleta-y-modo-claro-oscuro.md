@@ -1,7 +1,7 @@
 # 0018 — Paleta de colores y modo claro y oscuro
 
 - **Fecha:** 2026-11-13
-- **Estado:** aceptada
+- **Estado:** aceptada; el modo inicial fue sustituido por [0046](0046-modo-oscuro-por-defecto.md)
 - **Decidido por:** Ronald Cadiz
 - **Referencias:** `odd/tasks/sistema-de-diseno-base.md` (S1); tarea de Notion "Registrar decisiones de diseño (ADRs)"
 

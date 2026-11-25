@@ -83,7 +83,7 @@ En T2, un test de Vitest calcula esta fórmula para cada pareja texto/fondo en m
 
 ## 5. Modo claro y oscuro
 
-Nuxt UI activa el modo oscuro poniendo la clase `.dark` en `<html>`. Las variables `--ui-*` tienen un valor en `:root` (claro) y otro en `.dark` (oscuro). El modo inicial "seguir al sistema" (ADR 0018) usa la preferencia `prefers-color-scheme` del sistema operativo. El botón para cambiarlo queda para la historia "Layout y navegación".
+Nuxt UI activa el modo oscuro poniendo la clase `.dark` en `<html>`. Las variables `--ui-*` tienen un valor en `:root` (claro) y otro en `.dark` (oscuro). El modo inicial es oscuro (ADR 0046, que sustituye al "seguir al sistema" del ADR 0018): la layer `base` lo fija con `colorMode: { preference: 'dark' }` en su `nuxt.config.ts`. El botón de dos estados (`UColorModeButton`, en el header del layout) cambia entre claro y oscuro, y la elección se guarda.
 
 ## 6. Tipografía, radio, espaciado y breakpoints
 
