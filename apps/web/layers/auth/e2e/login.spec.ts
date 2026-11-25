@@ -110,6 +110,43 @@ test.describe('login page', () => {
     await expect(page).toHaveURL(/\/facturas$/)
   })
 
+  test('pressing Enter while it waits does not send a second login (decision 1)', async ({
+    page,
+  }) => {
+    const requests: string[] = []
+    page.on('request', (request) => {
+      if (request.url().endsWith('/api/auth/login'))
+        requests.push(request.method())
+    })
+
+    await demoButton(page).click()
+    await submitButton(page).click()
+    await passwordField(page).press('Enter')
+
+    await expect(page).toHaveURL(/\/facturas$/)
+    expect(requests).toEqual(['POST'])
+  })
+
+  test('a second submit that skips the disabled button is ignored while it waits', async ({
+    page,
+  }) => {
+    const requests: string[] = []
+    page.on('request', (request) => {
+      if (request.url().endsWith('/api/auth/login'))
+        requests.push(request.method())
+    })
+
+    await demoButton(page).click()
+    await submitButton(page).click()
+    // `requestSubmit` is what password managers and scripts call: it ignores the button.
+    await page
+      .locator('form')
+      .evaluate((form: HTMLFormElement) => form.requestSubmit())
+
+    await expect(page).toHaveURL(/\/facturas$/)
+    expect(requests).toEqual(['POST'])
+  })
+
   test('the demo account signs in, lands on /facturas and survives a reload (S3)', async ({
     page,
     context,

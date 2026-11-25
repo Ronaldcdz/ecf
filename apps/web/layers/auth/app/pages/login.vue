@@ -12,6 +12,8 @@ const loading = ref(false)
 const errorMessage = ref('')
 
 async function signIn(data: LoginData) {
+  // The button is disabled while loading, but a submit can skip the button (`requestSubmit`).
+  if (loading.value) return
   loading.value = true
   errorMessage.value = ''
   try {
