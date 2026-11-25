@@ -1,10 +1,5 @@
-/**
- * The demo account and the rules of the simulated login route (ADR 0068, 0079).
- *
- * This file is in the `shared/` folder of the auth layer, so Nuxt offers it to the
- * app (the "Entrar como demo" button) and to the server (the mock route) at the same
- * time. It must never move to `packages/shared`: the real API does not know it.
- */
+// In the layer's `shared/` folder so the app (demo button) and the server (mock route) use
+// the same file. Never move it to `packages/shared`: the real API must not know it (ADR 0079).
 import { loginSchema, validationErrorsFrom } from '@ecf/shared'
 import type {
   ErrorMessage,
@@ -18,13 +13,11 @@ export const DEMO_ACCOUNT = {
   password: 'demo1234',
 } as const
 
-/** Who signs in with the demo account: the user and company approved in the design (T2). */
 export const DEMO_SESSION: LoginResponse = {
   user: { name: 'Ana Pérez' },
   company: { name: 'Comercial Ejemplo SRL' },
 }
 
-/** The session of the demo account, or `null` for any other email or password. */
 export function authenticateDemo(data: LoginData): LoginResponse | null {
   const isDemo =
     data.email === DEMO_ACCOUNT.email && data.password === DEMO_ACCOUNT.password
@@ -36,15 +29,9 @@ export type LoginAttempt =
   | { status: 400; body: ValidationErrors }
   | { status: 401; body: ErrorMessage }
 
-/**
- * What `POST /api/auth/login` answers for a body (ADR 0077): 400 when the format is
- * wrong, 401 when the format is right but the account is not the demo one, 200 with
- * the session otherwise. The route only adds the delay (ADR 0078) and the HTTP status.
- */
 export function loginAttempt(body: unknown): LoginAttempt {
-  // A body that is not an object has no fields: it is read as an object with every field
-  // missing, so the 400 still says which fields are needed (a whole-object error would
-  // leave `{}`, with no messages).
+  // Not an object: read it as an object with every field missing, so the 400 names the
+  // fields (a whole-object error would leave `{}`).
   const isObject =
     typeof body === 'object' && body !== null && !Array.isArray(body)
   const parsed = loginSchema.safeParse(isObject ? body : {})

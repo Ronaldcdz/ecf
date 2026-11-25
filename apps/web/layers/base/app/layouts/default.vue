@@ -16,8 +16,7 @@ const items: NavigationMenuItem[] = [
 
 const session = useSessionStore()
 
-// The layout shows once someone signed in; the user is `null` only before that.
-// T7 of the login story moves this area to the sidebar footer (ADR 0072).
+// The user is `null` only before signing in. T7 moves this area to the sidebar footer (ADR 0072).
 const userName = computed(() => session.user?.name ?? '')
 const userMenu = computed<DropdownMenuItem[]>(() => [{ label: userName.value, type: 'label' }])
 

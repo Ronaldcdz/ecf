@@ -10,11 +10,7 @@ export interface SessionCompany {
   name: string
 }
 
-/**
- * Global session state: the signed-in user and the active company (S9, ADR 0045).
- * It starts signed out; `signIn` fills it with what the login answers (ADR 0075)
- * and `signOut` clears it. The `auth` layer decides when to call them.
- */
+// Starts signed out; the `auth` layer calls `signIn` and `signOut` (ADR 0075).
 export const useSessionStore = defineStore('session', () => {
   const user = ref<SessionUser | null>(null)
   const activeCompany = ref<SessionCompany | null>(null)

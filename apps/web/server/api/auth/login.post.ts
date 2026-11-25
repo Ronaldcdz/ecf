@@ -1,10 +1,4 @@
-/**
- * Simulated login (ADR 0068, 0077, 0078). It answers like the real API will, with the
- * types of `packages/shared`: 200 with the session, 400 with the messages of each field,
- * 401 with a message. `loginAttempt` decides; this route adds the delay and the status.
- */
-
-// A short wait, so the "Entrar" button shows its loading state (ADR 0078).
+// Simulated server delay, so the "Entrar" button shows its loading state (ADR 0078).
 const LOGIN_DELAY_MS = 600
 
 export default defineEventHandler(async (event) => {

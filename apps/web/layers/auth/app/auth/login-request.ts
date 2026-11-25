@@ -1,7 +1,3 @@
-/**
- * Typed client of `POST /api/auth/login` (ADR 0077). Components never call `$fetch`
- * themselves (CLAUDE.md): they go through `useAuth`, which uses this client.
- */
 import {
   errorMessageSchema,
   loginResponseSchema,
@@ -11,12 +7,10 @@ import type { LoginInput, LoginResponse, ValidationErrors } from '@ecf/shared'
 
 export type AuthErrorKind = 'invalid-credentials' | 'validation' | 'unknown'
 
-/** Why a login failed, in a form the login page can show. */
 export class AuthError extends Error {
   constructor(
     readonly kind: AuthErrorKind,
     message: string,
-    /** Only for `validation`: the messages under each field. */
     readonly fieldErrors?: ValidationErrors,
   ) {
     super(message)
@@ -24,7 +18,7 @@ export class AuthError extends Error {
   }
 }
 
-/** The part of `$fetch` this client needs; tests replace it with a fake. */
+// Only the part of `$fetch` this client needs, so tests can pass a fake.
 export type Fetcher = (
   url: string,
   options: { method: 'POST'; body: LoginInput },
@@ -32,7 +26,6 @@ export type Fetcher = (
 
 const nuxtFetcher: Fetcher = (url, options) => $fetch(url, options)
 
-/** The status and the body of a failed `$fetch` call, or `undefined` when there was no answer. */
 function answerOf(
   error: unknown,
 ): { status: number; data: unknown } | undefined {
